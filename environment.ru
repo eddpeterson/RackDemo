@@ -17,4 +17,17 @@ class EnvironmentOutput
 
 end
 
-run EnvironmentOutput.new
+require "./haiku"
+require "haml"
+class MyApp
+	def call(env)
+		poem = Haiku.new.random
+		template = File.open("views/index.haml").read
+		engine = Haml::Engine.new(template)
+		out = engine.render(Object.new, :poem => poem)
+		["200", {"Content-Type" => "text/html"}, out]
+	end
+end
+
+use EnvironmentOutput
+run MyApp.new
