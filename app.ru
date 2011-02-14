@@ -1,10 +1,17 @@
+require "./myFramework"
+require "./haiku"
+require "./quotes"
 
-class HelloWorld
-
-	def call(env)
-		["200", {"Content-Type" => "text/plain"}, ["Hello World"]]
+class HaikuApp < MyFramework
+	def initialize
+		get("index", :poem => Haiku.new.random)
 	end
-
 end
 
-run HelloWorld.new
+class QuotesApp < MyFramework
+	def initialize
+		get("index", :poem => Quotes.new.random)
+	end
+end
+
+run HaikuApp.new
